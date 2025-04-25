@@ -3,12 +3,13 @@ const mongoose = require("mongoose");
 const path = require("path");
 const authRoutes = require("./routes/auth.routes");
 const adminRoutes=require("./routes/admin.routes");
+const config=require("./config.json")
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
 
 
-const url = "mongodb+srv://badalrathore922:ir1hWP061TXU8PYQ@valtech.c7tczty.mongodb.net/formDB?retryWrites=true&w=majority&appName=Valtech";
+const url = `mongodb+srv://${config.username}:${config.userpassword}@${config.clustername}.1aid6nj.mongodb.net/${config.dbname}?retryWrites=true&w=majority&appName=${config.clustername}`;
 mongoose
   .connect(url)
   .then(() => console.log("DB Connected"))

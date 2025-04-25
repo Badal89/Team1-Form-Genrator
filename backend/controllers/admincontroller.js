@@ -139,4 +139,4 @@ async function getResponsesForUser(req,res){
 
 }
 
-module.exports={getDashboard,createForm,getForm,getResponses,getResponsesForUser}
+module.exports={getDashboard,createForm,getForms,getResponses,getResponsesForUser}

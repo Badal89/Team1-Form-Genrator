@@ -7,7 +7,7 @@ router.get("/",middlewares.authorizeUser,controllers.getDashboard);
 
 router.post("/form",middlewares.authorizeUser,controllers.createForm);
 
-router.get("/form",middlewares.authorizeUser,controllers.getForm);
+router.get("/form",middlewares.authorizeUser,controllers.getForms);
 
 router.get("/responses",middlewares.authorizeUser,controllers.getResponses);
 

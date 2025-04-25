@@ -6,7 +6,8 @@ const FormSchema= mongoose.Schema({
     _id: mongoose.Schema.ObjectId,
     title: {required: true,type:Number,unique: true},
     noOfFields:{required: true,type: Number},
-    formFields:{type:[fields],required: true,default:undefined}
+    formFields:{type:[fields],required: true,default:undefined},
+    type: {type: String,required: true}
 })
 
 
