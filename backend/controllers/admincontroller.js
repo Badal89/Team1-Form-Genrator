@@ -1,7 +1,8 @@
 const express=require("express")
 const mongoose=require("mongoose")
-const UserModel=require("../models/forms.js")
+const FormModel=require("../models/forms.js")
 const Responses=require("../models/responses.js");
+const UserModel=require("../models/users.js")
 async function getDashboard(req,res){
     try{
         const forms= await UserModel.find();
@@ -24,7 +25,7 @@ async function createForm(req,res){
     const Fields=obj.formFields;
     try {
 
-        let formData=await UserModel.create({title:title,noOfFields:noOfFields,formFields:Fields})
+        let formData=await FormModel.create({title:title,noOfFields:noOfFields,formFields:Fields})
         console.log(data)
         res.status(200).json({data:formData})
         return;
@@ -35,11 +36,39 @@ async function createForm(req,res){
     }
 }
 
-async function getForm(req,res){
+async function getForms(req,res){
+    if(req.body){
+        try {
+            const forms= await FormModel.find();
+            const user=await UserModel.findOne({_id:req.user._id})
+            const arr=[]
+            forms.forEach(element => {
+                if(!user.forms.contains(element._id)){
+                    arr.push(element);
+                }
+            });
+            res.status(200).json({data:arr});
+            return;
+
+        } catch (error) {
+            res.status(400).json({message:"Submit User Data"});
+            return;
+        }
+    }
+
+    else{
+        res.status(500).json({message:"Internal Server Error"});
+        return;
+
+    }
+
+}
+
+async function getFormByTitle(req,res){
 
     if(req.body){
         try{
-            const formData=await UserModel.findOne({title: req.body.title})
+            const formData=await FormModel.findOne({title: req.body.title})
             res.status(200).json({data:formData})
             return;
         }
@@ -85,7 +114,7 @@ async function getResponsesForUser(req,res){
 
     if(req.body){
         try{
-            const user=await UserModel.findOne({userName:req.body.userName});
+            const user=await UserModel.findOne({username:req.body.userName});
         }
         catch(error){
             res.status(500).json({message:"Error While Retrieving User Details"});

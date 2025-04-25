@@ -10,7 +10,9 @@ const userSchema = new mongoose.Schema({
     enum: ["user", "admin"],
     default: "user",
   },
+  forms:[{type:mongoose.Schema.ObjectId,ref:'Form'}]
 });
+
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
