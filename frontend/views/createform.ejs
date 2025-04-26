@@ -128,14 +128,12 @@
                     obj["inputvalidation"]=validationArray;
                     inp.push(obj)
                 }
-      
-            
             })  
-                
-                arr.push(select);
-                arr.push(check);
-                arr.push(inp);
-                arr.push(radio);
+            
+                arr.push({"select":select});
+                arr.push({"check":check});
+                arr.push({"radio":radio});
+                arr.push({"input":inp});
                 formobj["formFields"]=arr;
                 formobj["title"]=document.getElementsByName("topicTitle")[0].value;
                 formobj["noOfFields"]=document.getElementsByName("numberInput")[0].value;
