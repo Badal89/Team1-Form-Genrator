@@ -12,7 +12,7 @@ async function getDashboard(req,res){
     }
     catch(error){
         console.log(error)
-        res.status(500).json({message:"Internal Server Error"})
+        res.status(500).json({message:"Internal Server Error"})``
     }
 }
 
@@ -20,13 +20,10 @@ async function getDashboard(req,res){
 async function createForm(req,res){
     const arr=[];
     const obj=req.body;
-    const title=obj.title;
-    const noOfFields=obj.noOfFields;
-    const Fields=obj.formFields;
+    console.log(req.body);
     try {
 
-        let formData=await FormModel.create({title:title,noOfFields:noOfFields,formFields:Fields})
-        console.log(data)
+        let formData=await FormModel.create(obj);
         res.status(200).json({data:formData})
         return;
     } catch (error) {

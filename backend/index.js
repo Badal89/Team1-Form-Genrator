@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors=require("cors")
 const path = require("path");
 const authRoutes = require("./routes/auth.routes");
 const adminRoutes=require("./routes/admin.routes");
@@ -7,7 +8,7 @@ const config=require("./config.json")
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true })); 
-
+app.use(cors());
 
 const url = `mongodb+srv://${config.username}:${config.userpassword}@${config.clustername}.1aid6nj.mongodb.net/${config.dbname}?retryWrites=true&w=majority&appName=${config.clustername}`;
 mongoose

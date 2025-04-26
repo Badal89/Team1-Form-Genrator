@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7"
+    crossorigin="anonymous"
+  />
+    <script>
+
+        function create(event){
+            const getEle=document.getElementsByTagName("form")[0];
+            const numbvalue=document.getElementsByName("numberInput")[0].value;
+            const title=document.getElementsByName("topicTitle")[0].value;
+            for(let i=0;i<numbvalue;i++){
+                getEle.innerHTML+=`<div class="formgroup d-flex">
+                     <div class="maincont mb-3">
+                <label for="exampleInputEmail1" class="form-label">Input Type</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+                 <div class="maincont mb-3">
+                <label for="exampleInputEmail1" class="form-label">Label</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+                 <div class="maincont mb-3">
+                <label for="exampleInputEmail1" class="form-label">Validation</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+                 <div class="maincont mb-3">
+                <label for="exampleInputEmail1" class="form-label">Validation</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                </div>
+                </div>`
+            }
+            getEle.innerHTML+=`<button type="button" class="generate create btn btn-primary">Primary</button>`;
+            document.getElementsByClassName("generate")[0].addEventListener("click",generateForm)
+            document.getElementsByName("topicTitle")[0].value=title;
+            document.getElementsByName("numberInput")[0].value=numbvalue;
+        }
+
+        async function sendData(arr){
+            try {
+                await fetch("http://localhost:5000/admin/form",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(arr)});
+            } catch (error) {
+                console.log("Error While Creating Form");
+            }
+        }
+
+        function generateForm(){
+            const getDiv=document.getElementsByClassName("formgroup");
+            const getDivNodes=Array.from(getDiv);
+            const formobj={}
+            const arr=[];
+            const radio=[];
+            const check=[];
+            const inp=[];
+            const select=[];
+            getDivNodes.forEach(ele=>{
+                const obj={}
+                const children=ele.getElementsByTagName("input");
+                console.log(children);
+                const inputType=children[0].value;
+                let labels=children[1].value;
+                let labelsArray=[]
+                console.log(labels)
+                let validationFields=children[2].value;
+                let shorthandFields=children[3].value;
+                let validationArray=[];
+                if(validationFields.includes(",")){
+                    validationFields=validationFields.split(",");
+                    validationFields.forEach(ele=>{
+                        const validationItem=ele.split(":");
+                        const validationItemObj={};
+                        validationItemObj["prop"]=validationItem[0];
+                        validationItemObj["val"]=validationItem[1];
+                        validationArray.push(validationItemObj)
+                    })
+                }
+                else{
+                        const validationItem=validationFields.split(":");
+                        const validationItemObj={};
+                        validationItemObj["prop"]=validationItem[0];
+                        validationItemObj["val"]=validationItem[1];
+                        validationArray.push(validationItemObj)
+                }
+                if(labels.includes(",")){
+                    labels=labels.split(",")
+                    labelsArray=labels;
+                }
+                else{
+                    labelsArray.push(labels);
+                }
+
+                if(inputType==="radio"){
+                    let radiodiv={};
+                    radiodiv["mainLabel"]=labelsArray[0];
+                    radiodiv["options"]=labelsArray.slice(1);
+                    radiodiv["inputValidation"]=validationArray;
+                    radiodiv["shortHand"]=shorthandFields.split(",");
+                    radio.push(radiodiv);
+
+                }
+                else if(inputType==="checkbox"){
+                    let checkboxdiv={};
+                    checkboxdiv["mainLabel"]=labelsArray[0];
+                    checkboxdiv["options"]=labelsArray.slice(1);
+                    checkboxdiv["inputValidation"]=validationArray;
+                    checkboxdiv["shortHand"]=shorthandFields.split(",");
+                    check.push(checkboxdiv);
+
+                }
+                else if(inputType=="select"){
+                    let selectdiv={}
+                    selectdiv["mainLabel"]=labelsArray[0];
+                    selectdiv["options"]=labelsArray.slice(1);
+                    selectdiv["inputValidation"]=validationArray;
+                    selectdiv["shortHand"]=shorthandFields.split(",");
+                    select.push(selectdiv);
+
+                }
+                else{
+                    obj["inputType"]=inputType;
+                    obj["labels"]=labelsArray;
+                    obj["inputvalidation"]=validationArray;
+                    inp.push(obj)
+                }
+      
+            
+            })  
+                
+                arr.push(select);
+                arr.push(check);
+                arr.push(inp);
+                arr.push(radio);
+                formobj["formFields"]=arr;
+                formobj["title"]=document.getElementsByName("topicTitle")[0].value;
+                formobj["noOfFields"]=document.getElementsByName("numberInput")[0].value;
+                formobj["formType"]=document.getElementsByName("topicTitle")[0].value;
+                sendData(formobj).then(data=>console.log(data)).catch(err=>{console.log(err)})
+
+        }
+
+            document.addEventListener("DOMContentLoaded",function(){
+            document.getElementsByTagName("button")[0].addEventListener("click",create);
+
+
+        })
+
+    </script>
+</head>
+<body>
+
+        <form action="">
+            <div class="maincont mb-3 width:20px">
+                <label for="topicTitle" class="form-label">Title</label>
+                <input type="email" class="form-control" id="topicTitle" name="topicTitle" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                  <label for="numberInput" class="form-label">Enter a number</label>
+                  <input type="number" name="numberInput" class="form-control" id="numberInput" placeholder="Enter a number" min="1" max="100" step="1">
+                </div>
+                <button type="button" class="create btn btn-primary">Primary</button>
+
+        </form>
+</body>
+</html>

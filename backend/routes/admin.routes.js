@@ -5,7 +5,7 @@ const middlewares=require("../middlewares/auth.middlewares")
 
 router.get("/",middlewares.authorizeUser,controllers.getDashboard);
 
-router.post("/form",middlewares.authorizeUser,controllers.createForm);
+router.post("/form",controllers.createForm);
 
 router.get("/form",middlewares.authorizeUser,controllers.getForms);
 

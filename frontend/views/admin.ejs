@@ -12,27 +12,9 @@
     }
 
     function createForm(event){
-
-      const element=document.createElement("form");
-      element.innerHTML+=` <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Title</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-      </div>
-      <div class="mb-3">
-        <label for="numberInput" class="form-label">Enter a number</label>
-        <input type="number" class="form-control" id="numberInput" placeholder="Enter a number" min="1" max="100" step="1">
-      </div>`
-
-      const submitButton=document.createElement("button");
-      submitButton.classList.add("btn");
-      submitButton.classList.add("btn-primary");
-      submitButton.setAttribute("type","submit");
-      submitButton.textContent="Submit";
-      submitButton.addEventListener("click",handleData)
-      element.appendChild(submitButton);
-      document.getElementsByClassName("maindiv")[0].appendChild(element);
-
+      window.location.href=window.origin+"/form"
     }
+
     document.addEventListener("DOMContentLoaded",function(){
       document.getElementsByTagName("button")[0].addEventListener("click",createForm)
 
